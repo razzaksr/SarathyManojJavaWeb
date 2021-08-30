@@ -11,6 +11,6 @@ public class Sample
 	static
 	{
 		System.out.println("Sarathy and Manoj are gonna work in MNC");
-		System.out.println("Zealous tech corp offers training in demanded technologies");
+		System.out.println("Zealous Tech corp offers training in demanded technologies");
 	}
 }
