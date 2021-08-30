@@ -1,4 +1,4 @@
-package java.sarathy.manoj.ManojSarathyJava;
+package sarathy.manoj.ManojSarathyJava;
 
 /**
  * Hello world!
