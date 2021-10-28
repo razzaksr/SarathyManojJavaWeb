@@ -38,7 +38,7 @@ public class OperateMulti
 	{
 		if(row<yet.length)
 		{
-			Arrays.sort(yet[row]);
+			//Arrays.sort(yet[row]);
 			int pos=OperateMulti.search(yet[row], 0, yet[row].length, data);
 			if(pos!=-1)
 			{
@@ -53,6 +53,25 @@ public class OperateMulti
 		}
 	}
 	
+	public static void selectionSort(double[][] yet)
+	{
+		for(int row=0;row<yet.length;row++)
+		{
+			for(int select=0;select<yet[row].length;select++)
+			{
+				for(int com=select+1;com<yet[row].length;com++)
+				{
+					if(yet[row][select]>yet[row][com])
+					{
+						double third=yet[row][select];
+						yet[row][select]=yet[row][com];
+						yet[row][com]=third;
+					}
+				}
+			}
+		}
+	}
+	
 	public static void main(String[] args) 
 	{
 		double[][] flats= new double[3][];
@@ -60,6 +79,7 @@ public class OperateMulti
 		flats[1]= new double[] {8.9,3.4,12.5,9.2,5.6,8.1};
 		flats[2]= new double[] {4.5,7.2,6.3,19.6,4.5};
 		//OperateMulti.list(flats);
+		OperateMulti.selectionSort(flats);
 		OperateMulti.recur(flats, 0, 9.2);
 	}
 }
