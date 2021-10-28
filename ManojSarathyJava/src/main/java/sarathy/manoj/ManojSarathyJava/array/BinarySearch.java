@@ -14,13 +14,16 @@ public class BinarySearch
 	
 	public int search(double[] say,int start,int end,double users)
 	{
-		int mid=(end+start)/2;
-		if(say[mid]==users)
-			return mid;
-		else if(say[mid]>users)
-			return search(say, start, mid, users);
-		else if(say[mid]<users)
-			return search(say, mid+1, end, users);
+		if(end>start)
+		{
+			int mid=(end+start)/2;
+			if(say[mid]==users)
+				return mid;
+			else if(say[mid]>users)
+				return search(say, start, mid, users);
+			else
+				return search(say, mid+1, end, users);
+		}
 		return -1;
 	}
 	
@@ -30,6 +33,6 @@ public class BinarySearch
 		Arrays.sort(hai);
 		BinarySearch binary=new BinarySearch();
 		binary.traverse(hai);
-		System.out.println(binary.search(hai,0,hai.length,7.4));
+		System.out.println(binary.search(hai,0,hai.length,0.0));
 	}
 }
