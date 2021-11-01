@@ -2,7 +2,7 @@ package sarathy.manoj.ManojSarathyJava.oops;
 
 public class Association implements ForumActions
 {
-	Forum[] ksr=new Forum[10];// storage
+	Forum[] ksr=new Forum[10];// Storage
 	public static void main(String[] args) 
 	{
 		Forum f1=new Forum(); f1.setGroupIncharge("Razak Mohamed");
