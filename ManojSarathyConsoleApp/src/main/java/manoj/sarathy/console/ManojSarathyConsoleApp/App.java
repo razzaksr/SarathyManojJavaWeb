@@ -1,13 +1,17 @@
-package sarathy.manoj.ManojSarathyJava.oops;
+package manoj.sarathy.console.ManojSarathyConsoleApp;
 
 import java.util.Scanner;
 
-public class Association implements ForumActions
+/**
+ * Hello world!
+ *
+ */
+public class App implements ForumActions
 {
 	Forum[] ksr=new Forum[10];// Storage
 	Scanner scan=new Scanner(System.in);
 	
-	public Association()
+	public App()
 	{
 		ksr[0]=new Forum("Web", "Javascript", "Mohamed", 20, 40);
 		ksr[1]=new Forum("NEAN", "JavaScript", "Razak", 45, 120);
@@ -23,47 +27,62 @@ public class Association implements ForumActions
 	
 	public static void main(String[] args) 
 	{
-		Forum f1=new Forum(); f1.setGroupIncharge("Razak Mohamed");
-		f1.setGroupName("Intelligent"); f1.setGroupTechnology("Python");
-		f1.setMembersCount(40); f1.setProductionHours(60);
-		Forum f2=new Forum("Web", "Javascript", "Mohamed", 20, 40);
-		Association ass=new Association();
-		/*
-		 * Association ass=new Association(); System.out.println(ass.addNewGroup(f1));;
-		 * System.out.println(ass.addNewGroup(f2));;
-		 */
-		
-		ass.sortGroup();
-		ass.listAllGroups();
-		
-		//ass.searchGroup("Javascript");
-		
-		//ass.searchGroup(40);
-		//ass.searchGroup("Annamalai",50);
-		
-		//ass.deleteGroup("CS-4");
-		
-		//ass.updateGroup("Java");
-		
-		
-		
-		/*
-		 * Forum f1=new Forum(); f1.setGroupIncharge("Razak Mohamed");
-		 * f1.setGroupName("Intelligent"); f1.setGroupTechnology("Python");
-		 * f1.setMembersCount(40); f1.setProductionHours(60);
-		 * 
-		 * System.out.println(f1);
-		 * 
-		 * 
-		 * Forum f2=new Forum("Web", "Javascript", "Mohamed", 20, 40);
-		 * System.out.println(f2.getGroupIncharge());
-		 */
-		
-		/*
-		 * Forum f3; System.out.println(f3);
-		 */
-		
-		
+		App app=new App();
+		do
+		{
+			System.out.println("1. New forum\n2. List All\n3.Update\n4. Delete\n5.Sort\n6. Search\n7.Exit");
+			int menu=app.scan.nextInt();
+			switch(menu)
+			{
+			case 1:
+				System.out.println("Create new Forum with mandate details name,tech,incharge,count,hours");
+				Forum forum=new Forum(app.scan.next(), app.scan.next(), app.scan.next(), app.scan.nextInt(), app.scan.nextInt());
+				//Forum forum=new Forum();
+				//forum.setGroupName(app.scan.next());
+				
+				System.out.println(app.addNewGroup(forum));
+				break;
+			case 2:
+				System.out.println("Listing all Forum's");
+				app.listAllGroups();
+				break;
+			case 3:
+				System.out.println("Update forum by forum name: ");
+				String name=app.scan.next();
+				app.updateGroup(name);
+				break;
+			case 4:
+				System.out.println("Delete by forum name: ");
+				name=app.scan.next();
+				app.deleteGroup(name);
+				break;
+			case 5:
+				System.out.println("Sort Forum");
+				app.sortGroup();
+				break;
+			case 6:
+				System.out.println("Search based on technology or count or incharge and hours");
+				String what=app.scan.next();
+				switch(what)
+				{
+				case "tech":
+					System.out.println("Tell us technology");
+					app.searchGroup(app.scan.next());
+					break;
+				case "count":
+					System.out.println("Tell us members count");
+					app.searchGroup(app.scan.nextInt());
+					break;
+				case "incharge":
+					System.out.println("Tell us incharge and hours");
+					app.searchGroup(app.scan.next(),app.scan.nextInt());
+					break;
+				default:System.out.println("Nothing to search");
+				}
+				break;
+			default:return;
+			}
+		}while(true);
 	}
 
 	
@@ -254,3 +273,4 @@ public class Association implements ForumActions
 		}
 	}
 }
+
