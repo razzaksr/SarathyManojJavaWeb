@@ -1,5 +1,6 @@
 package manoj.sarathy.console.ManojSarathyConsoleApp;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -90,15 +91,28 @@ public class App implements ForumActions
 	@Override
 	public String addNewGroup(Forum forum) {
 		// TODO Auto-generated method stub
-		for(int index=0;index<ksr.length;index++)
+		try
 		{
-			if(ksr[index]==null)
+			for(int index=0;index<ksr.length;index++)
 			{
-				ksr[index]=forum;
-				return forum.getGroupName()+" has added";
+				if(ksr[index]==null)
+				{
+					ksr[index]=forum;
+					return forum.getGroupName()+" has added";
+				}
 			}
+			throw new ForumNotFoundException();
 		}
-		return forum.getGroupName()+" hasn't added";
+		catch(ForumNotFoundException foru)
+		{
+			System.out.println(foru+"\nDelete something inorder to add: ");
+			for(Forum h:ksr)
+			{
+				System.out.println(h.getGroupName());
+			}
+			deleteGroup(scan.next());
+			return addNewGroup(forum);
+		}
 	}
 
 	@Override
@@ -106,7 +120,15 @@ public class App implements ForumActions
 		// TODO Auto-generated method stub
 		for(Forum k:ksr)
 		{
-			System.out.println(k);
+			try
+			{
+				System.out.println(k.toString());
+			}
+			catch(NullPointerException np)
+			{
+				System.out.println(np);
+				continue;
+			}
 		}
 		
 	}
@@ -114,61 +136,128 @@ public class App implements ForumActions
 	@Override
 	public void deleteGroup(String name) {
 		// TODO Auto-generated method stub
-		for(int index=0;index<ksr.length;index++)
+		try
 		{
-			if(ksr[index].getGroupName().equalsIgnoreCase(name))
+			for(int index=0;index<ksr.length;index++)
 			{
-				ksr[index]=null;
-				System.out.println(name+" forum has removed successfully");
-				return;
+				if(ksr[index].getGroupName().equalsIgnoreCase(name))
+				{
+					ksr[index]=null;
+					System.out.println(name+" forum has removed successfully");
+					return;
+				}
 			}
+			throw new ForumNotFoundException();
 		}
-		System.out.println(name+" hasn't found anywhere");
+		catch(ForumNotFoundException fore)
+		{
+			System.out.println(fore+"\nInvalid Forum name, Enter exact name to delete");
+			for(Forum h:ksr)
+			{
+				System.out.println(h.getGroupName());
+			}
+			deleteGroup(scan.next());
+		}
 	}
 
 	@Override
 	public void updateGroup(String name) {
 		// TODO Auto-generated method stub
-		for(int index=0;index<ksr.length;index++)
+		try
 		{
-			if(ksr[index].getGroupName().equalsIgnoreCase(name))
+			for(int index=0;index<ksr.length;index++)
 			{
-				System.out.println(ksr[index]);
-				System.out.println("Tell us what to update");
-				String what=scan.next();
-				switch(what)
+				if(ksr[index].getGroupName().equalsIgnoreCase(name))
 				{
-				case "name":
-					System.out.println("Tell us new group name: ");
-					String nm=scan.next();
-					ksr[index].setGroupName(nm);
-					break;
-				case "technology":
-					System.out.println("Tell us new group technology: ");
-					String tech=scan.next();
-					ksr[index].setGroupTechnology(tech);
-					break;
-				case "head":
-					System.out.println("Tell us new group incharge: ");
-					String inc=scan.next();
-					ksr[index].setGroupIncharge(inc);
-					break;
-				case "count":
-					System.out.println("Tell us new group members count: ");
-					int count=scan.nextInt();
-					ksr[index].setMembersCount(count);
-					break;
-				case "hours":
-					System.out.println("Tell us new hours: ");
-					int hrs=scan.nextInt();
-					ksr[index].setProductionHours(hrs);
-					break;
+					System.out.println(ksr[index]);
+					try
+					{
+						System.out.println("Tell us what to update");
+						String what=scan.next();
+						switch(what)
+						{
+						case "name":
+							System.out.println("Tell us new group name: ");
+							String nm=scan.next();
+							ksr[index].setGroupName(nm);
+							break;
+						case "technology":
+							System.out.println("Tell us new group technology: ");
+							String tech=scan.next();
+							ksr[index].setGroupTechnology(tech);
+							break;
+						case "head":
+							System.out.println("Tell us new group incharge: ");
+							String inc=scan.next();
+							ksr[index].setGroupIncharge(inc);
+							break;
+						case "count":
+							System.out.println("Tell us new group members count: ");
+							int count=scan.nextInt();
+							ksr[index].setMembersCount(count);
+							break;
+						case "hours":
+							System.out.println("Tell us new hours: ");
+							int hrs=scan.nextInt();
+							ksr[index].setProductionHours(hrs);
+							break;
+						default:throw new ForumNotFoundException();
+						}
+						System.out.println(what+" has updated in "+name);
+						return;
+					}
+					catch(ForumNotFoundException | InputMismatchException forr)
+					{
+						Scanner scans=new Scanner(System.in);
+						System.out.println(forr+" enter exact name to update details: name,technology,head,count,hours");
+						System.out.println("Tell us what to update");
+						String what=scans.next();
+						switch(what)
+						{
+						case "name":
+							System.out.println("Tell us new group name: ");
+							String nm=scans.next();
+							ksr[index].setGroupName(nm);
+							break;
+						case "technology":
+							System.out.println("Tell us new group technology: ");
+							String tech=scans.next();
+							ksr[index].setGroupTechnology(tech);
+							break;
+						case "head":
+							System.out.println("Tell us new group incharge: ");
+							String inc=scans.next();
+							ksr[index].setGroupIncharge(inc);
+							break;
+						case "count":
+							System.out.println("Tell us new group members count: ");
+							int count=scans.nextInt();
+							ksr[index].setMembersCount(count);
+							break;
+						case "hours":
+							System.out.println("Tell us new hours: ");
+							int hrs=scans.nextInt();
+							ksr[index].setProductionHours(hrs);
+							break;
+						default:System.out.println("Maximum chances are over");
+						}
+						System.out.println(what+" has updated in "+name);
+						return;
+					}
 				}
-				System.out.println(what+" has updated in "+name);
-				return;
 			}
+			throw new ForumNotFoundException();
 		}
-		System.out.println(name+" hasn't updated");
+		catch(ForumNotFoundException fore)
+		{
+			System.out.println(fore+"\nInvalid forum name, enter correctly");
+			for(Forum h:ksr)
+			{
+				System.out.println(h.getGroupName());
+			}
+			updateGroup(scan.next());
+		}
+		//System.out.println(name+" hasn't updated");
 	}
 
 	@Override
