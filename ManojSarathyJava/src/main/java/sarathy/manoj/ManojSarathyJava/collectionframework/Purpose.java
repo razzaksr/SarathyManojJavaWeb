@@ -7,7 +7,7 @@ public class Purpose
 {
 	public static void main(String[] args) 
 	{
-		Stack hai=new Stack();
+		Stack hai=new Stack();// generic
 		hai.push("Manoj");hai.push(false);
 		hai.push('R');hai.push(12);hai.push(5.6);
 		hai.push(8765456789L);
@@ -28,5 +28,9 @@ public class Purpose
 		System.out.println("Top element: "+hai.peek());
 		
 		System.out.println(hai.search("Manoj"));
+		
+		Stack<String> hey=new Stack<String>();// non generic
+		hey.push("90");
+		System.out.println(hey);
 	}
 }
