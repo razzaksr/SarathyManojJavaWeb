@@ -53,6 +53,6 @@ class Mobile implements Comparable<Mobile>
 		// TODO Auto-generated method stub
 		//return this.price.compareTo(o.price);
 		//return o.ram.compareTo(this.ram);
-		return o.model.compareTo(this.model);
+		return o.price.compareTo(this.price);
 	}
 }

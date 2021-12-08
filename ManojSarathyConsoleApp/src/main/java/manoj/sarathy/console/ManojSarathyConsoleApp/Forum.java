@@ -1,6 +1,6 @@
 package manoj.sarathy.console.ManojSarathyConsoleApp;
 
-public class Forum 
+public class Forum implements Comparable<Forum>
 {
 	private String groupName;
 	private String groupTechnology;
@@ -40,7 +40,7 @@ public class Forum
 	@Override
 	public String toString() {
 		return "Forum [groupName=" + groupName + ", groupTechnology=" + groupTechnology + ", groupIncharge="
-				+ groupIncharge + ", membersCount=" + membersCount + ", productionHours=" + productionHours + "]";
+				+ groupIncharge + ", membersCount=" + membersCount + ", productionHours=" + productionHours + "]\n";
 	}
 	public Forum(String groupName, String groupTechnology, String groupIncharge, int membersCount,
 			int productionHours) {
@@ -54,5 +54,11 @@ public class Forum
 	public Forum() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	@Override
+	public int compareTo(Forum o) 
+	{
+		// TODO Auto-generated method stub
+		return this.groupName.compareTo(o.groupName);
 	}
 }

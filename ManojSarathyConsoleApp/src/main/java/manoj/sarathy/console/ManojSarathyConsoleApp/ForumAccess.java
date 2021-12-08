@@ -1,25 +1,29 @@
 package manoj.sarathy.console.ManojSarathyConsoleApp;
 
 import java.util.InputMismatchException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
+import java.util.TreeSet;
+import java.util.Vector;
 
 public class ForumAccess implements Runnable, ForumActions
 {
-	Forum[] ksr=new Forum[10];// Storage
+	TreeSet<Forum> ksr=new TreeSet<Forum>();
 	Scanner scan=new Scanner(System.in);
 	
 	public ForumAccess()
 	{
-		ksr[0]=new Forum("Web", "Javascript", "Mohamed", 20, 40);
-		ksr[1]=new Forum("NEAN", "JavaScript", "Razak", 45, 120);
-		ksr[2]=new Forum("MERN", "React", "Razak Mohamed", 60, 80);
-		ksr[3]=new Forum("Python", "DJango", "Sasi", 40, 100);
-		ksr[4]=new Forum("Java", "Spring", "Annamalai", 50, 70);
-		ksr[5]=new Forum("Dotnet", "Razor", "Maheshwaran", 35, 60);
-		ksr[6]=new Forum("Basic", "Python", "Annamalai", 25, 30);
-		ksr[7]=new Forum("Mobile", "Android", "Dinesh", 40, 45);
-		ksr[8]=new Forum("CS-4", "Data science", "Sobin", 100, 120);
-		ksr[9]=new Forum("EE-4", "VLSI", "Aasai", 30, 55);
+		ksr.add(new Forum("Web", "Javascript", "Mohamed", 20, 40));
+		ksr.add(new Forum("NEAN", "JavaScript", "Razak", 45, 120));
+		ksr.add(new Forum("MERN", "React", "Razak Mohamed", 60, 80));
+		ksr.add(new Forum("Python", "DJango", "Sasi", 40, 100));
+		ksr.add(new Forum("Java", "Spring", "Annamalai", 50, 70));
+		ksr.add(new Forum("Dotnet", "Razor", "Maheshwaran", 35, 60));
+		ksr.add(new Forum("Basic", "Python", "Annamalai", 25, 30));
+		ksr.add(new Forum("Mobile", "Android", "Dinesh", 40, 45));
+		ksr.add(new Forum("CS-4", "Data science", "Sobin", 100, 120));
+		ksr.add(new Forum("EE-4", "VLSI", "Aasai", 30, 55));
 	}
 	
 	@Override
@@ -87,64 +91,40 @@ public class ForumAccess implements Runnable, ForumActions
 		@Override
 		public String addNewGroup(Forum forum) {
 			// TODO Auto-generated method stub
-			try
-			{
-				for(int index=0;index<ksr.length;index++)
-				{
-					if(ksr[index]==null)
-					{
-						ksr[index]=forum;
-						return forum.getGroupName()+" has added";
-					}
-				}
-				throw new ForumNotFoundException();
-			}
-			catch(ForumNotFoundException foru)
-			{
-				System.out.println(foru+"\nDelete something inorder to add: ");
-				for(Forum h:ksr)
-				{
-					System.out.println(h.getGroupName());
-				}
-				deleteGroup(scan.next());
-				return addNewGroup(forum);
-			}
+			ksr.add(forum);
+			return forum.getGroupName()+" has added";
 		}
 
 		@Override
 		public void listAllGroups() {
 			// TODO Auto-generated method stub
-			for(Forum k:ksr)
+			Iterator<Forum> it=ksr.iterator();
+			while(it.hasNext())
 			{
-				try
-				{
-					System.out.println(k.toString());
-				}
-				catch(NullPointerException np)
-				{
-					System.out.println(np);
-					continue;
-				}
+				System.out.println(it.next());
 			}
-			
 		}
 
 		@Override
 		public void deleteGroup(String name) {
 			// TODO Auto-generated method stub
-			try
-			{
-				for(int index=0;index<ksr.length;index++)
+			//Forum[] tmp=(Forum[])ksr.toArray();
+			List<Forum> tmp=new Vector<Forum>();
+			tmp.addAll(ksr);
+				try
 				{
-					if(ksr[index].getGroupName().equalsIgnoreCase(name))
+					for(int index=0;index<tmp.size();index++)
 					{
-						ksr[index]=null;
-						System.out.println(name+" forum has removed successfully");
-						return;
+						if(tmp.get(index).getGroupName().equalsIgnoreCase(name))
+						{
+							ksr.remove(tmp.get(index));
+							System.out.println(name+" forum has removed successfully");
+							return;
+						}
 					}
+					throw new ForumNotFoundException();
 				}
-				throw new ForumNotFoundException();
-			}
+				
 			catch(ForumNotFoundException fore)
 			{
 				System.out.println(fore+"\nInvalid Forum name, Enter exact name to delete");
@@ -158,203 +138,102 @@ public class ForumAccess implements Runnable, ForumActions
 
 		@Override
 		public void updateGroup(String name) {
-			// TODO Auto-generated method stub
-			try
-			{
-				for(int index=0;index<ksr.length;index++)
-				{
-					if(ksr[index].getGroupName().equalsIgnoreCase(name))
-					{
-						System.out.println(ksr[index]);
-						try
-						{
-							System.out.println("Tell us what to update");
-							String what=scan.next();
-							switch(what)
-							{
-							case "name":
-								System.out.println("Tell us new group name: ");
-								String nm=scan.next();
-								ksr[index].setGroupName(nm);
-								break;
-							case "technology":
-								System.out.println("Tell us new group technology: ");
-								String tech=scan.next();
-								ksr[index].setGroupTechnology(tech);
-								break;
-							case "head":
-								System.out.println("Tell us new group incharge: ");
-								String inc=scan.next();
-								ksr[index].setGroupIncharge(inc);
-								break;
-							case "count":
-								System.out.println("Tell us new group members count: ");
-								int count=scan.nextInt();
-								ksr[index].setMembersCount(count);
-								break;
-							case "hours":
-								System.out.println("Tell us new hours: ");
-								int hrs=scan.nextInt();
-								ksr[index].setProductionHours(hrs);
-								break;
-							default:throw new ForumNotFoundException();
-							}
-							System.out.println(what+" has updated in "+name);
-							return;
-						}
-						catch(ForumNotFoundException | InputMismatchException forr)
-						{
-							Scanner scans=new Scanner(System.in);
-							System.out.println(forr+" enter exact name to update details: name,technology,head,count,hours");
-							System.out.println("Tell us what to update");
-							String what=scans.next();
-							switch(what)
-							{
-							case "name":
-								System.out.println("Tell us new group name: ");
-								String nm=scans.next();
-								ksr[index].setGroupName(nm);
-								break;
-							case "technology":
-								System.out.println("Tell us new group technology: ");
-								String tech=scans.next();
-								ksr[index].setGroupTechnology(tech);
-								break;
-							case "head":
-								System.out.println("Tell us new group incharge: ");
-								String inc=scans.next();
-								ksr[index].setGroupIncharge(inc);
-								break;
-							case "count":
-								System.out.println("Tell us new group members count: ");
-								int count=scans.nextInt();
-								ksr[index].setMembersCount(count);
-								break;
-							case "hours":
-								System.out.println("Tell us new hours: ");
-								int hrs=scans.nextInt();
-								ksr[index].setProductionHours(hrs);
-								break;
-							default:System.out.println("Maximum chances are over");
-							}
-							System.out.println(what+" has updated in "+name);
-							return;
-						}
-					}
-				}
-				throw new ForumNotFoundException();
-			}
-			catch(ForumNotFoundException fore)
-			{
-				System.out.println(fore+"\nInvalid forum name, enter correctly");
-				for(Forum h:ksr)
-				{
-					System.out.println(h.getGroupName());
-				}
-				updateGroup(scan.next());
-			}
-			//System.out.println(name+" hasn't updated");
-		}
+			/*
+			 * // TODO Auto-generated method stub try { for(int
+			 * index=0;index<ksr.length;index++) {
+			 * if(ksr[index].getGroupName().equalsIgnoreCase(name)) {
+			 * System.out.println(ksr[index]); try {
+			 * System.out.println("Tell us what to update"); String what=scan.next();
+			 * switch(what) { case "name": System.out.println("Tell us new group name: ");
+			 * String nm=scan.next(); ksr[index].setGroupName(nm); break; case "technology":
+			 * System.out.println("Tell us new group technology: "); String
+			 * tech=scan.next(); ksr[index].setGroupTechnology(tech); break; case "head":
+			 * System.out.println("Tell us new group incharge: "); String inc=scan.next();
+			 * ksr[index].setGroupIncharge(inc); break; case "count":
+			 * System.out.println("Tell us new group members count: "); int
+			 * count=scan.nextInt(); ksr[index].setMembersCount(count); break; case "hours":
+			 * System.out.println("Tell us new hours: "); int hrs=scan.nextInt();
+			 * ksr[index].setProductionHours(hrs); break; default:throw new
+			 * ForumNotFoundException(); } System.out.println(what+" has updated in "+name);
+			 * return; } catch(ForumNotFoundException | InputMismatchException forr) {
+			 * Scanner scans=new Scanner(System.in); System.out.println(
+			 * forr+" enter exact name to update details: name,technology,head,count,hours"
+			 * ); System.out.println("Tell us what to update"); String what=scans.next();
+			 * switch(what) { case "name": System.out.println("Tell us new group name: ");
+			 * String nm=scans.next(); ksr[index].setGroupName(nm); break; case
+			 * "technology": System.out.println("Tell us new group technology: "); String
+			 * tech=scans.next(); ksr[index].setGroupTechnology(tech); break; case "head":
+			 * System.out.println("Tell us new group incharge: "); String inc=scans.next();
+			 * ksr[index].setGroupIncharge(inc); break; case "count":
+			 * System.out.println("Tell us new group members count: "); int
+			 * count=scans.nextInt(); ksr[index].setMembersCount(count); break; case
+			 * "hours": System.out.println("Tell us new hours: "); int hrs=scans.nextInt();
+			 * ksr[index].setProductionHours(hrs); break;
+			 * default:System.out.println("Maximum chances are over"); }
+			 * System.out.println(what+" has updated in "+name); return; } } } throw new
+			 * ForumNotFoundException(); } catch(ForumNotFoundException fore) {
+			 * System.out.println(fore+"\nInvalid forum name, enter correctly"); for(Forum
+			 * h:ksr) { System.out.println(h.getGroupName()); } updateGroup(scan.next()); }
+			 * //System.out.println(name+" hasn't updated");
+			 */		}
 
 		@Override
 		public void searchGroup(String technology) 
 		{
-			System.out.println("Trying to fetch froum's matching the technology "+technology);
-			// TODO Auto-generated method stub
-			for(int index=0;index<ksr.length;index++)
-			{
-				if(ksr[index].getGroupTechnology().equalsIgnoreCase(technology))
-				{
-					System.out.println(ksr[index]);
-				}
-			}
+			/*
+			 * System.out.println("Trying to fetch froum's matching the technology "
+			 * +technology); // TODO Auto-generated method stub for(int
+			 * index=0;index<ksr.length;index++) {
+			 * if(ksr[index].getGroupTechnology().equalsIgnoreCase(technology)) {
+			 * System.out.println(ksr[index]); } }
+			 */
 		}
 
 		@Override
 		public void searchGroup(int count) {
-			// TODO Auto-generated method stub
-			System.out.println("Trying to fetch froum's matching the members count "+count);
-			// TODO Auto-generated method stub
-			for(int index=0;index<ksr.length;index++)
-			{
-				if(ksr[index].getMembersCount()>=count)
-				{
-					System.out.println(ksr[index]);
-				}
-			}
+			/*
+			 * // TODO Auto-generated method stub
+			 * System.out.println("Trying to fetch froum's matching the members count "
+			 * +count); // TODO Auto-generated method stub for(int
+			 * index=0;index<ksr.length;index++) { if(ksr[index].getMembersCount()>=count) {
+			 * System.out.println(ksr[index]); } }
+			 */
 		}
 
 		@Override
 		public void searchGroup(String incharge, int hours) {
-			// TODO Auto-generated method stub
-			System.out.println("Trying to fetch froum's matching the incharge "+incharge+" or production hours "+hours);
-			// TODO Auto-generated method stub
-			for(int index=0;index<ksr.length;index++)
-			{
-				if(ksr[index].getGroupIncharge().equalsIgnoreCase(incharge) || ksr[index].getProductionHours()>=hours)
-				{
-					System.out.println(ksr[index]);
-				}
-			}
+			/*
+			 * // TODO Auto-generated method stub
+			 * System.out.println("Trying to fetch froum's matching the incharge "
+			 * +incharge+" or production hours "+hours); // TODO Auto-generated method stub
+			 * for(int index=0;index<ksr.length;index++) {
+			 * if(ksr[index].getGroupIncharge().equalsIgnoreCase(incharge) ||
+			 * ksr[index].getProductionHours()>=hours) { System.out.println(ksr[index]); } }
+			 */
 		}
 
 		@Override
 		public void sortGroup() 
 		{
-			Forum forum=null; 
-			System.out.println("Based on ehat you wish to sort");
-			String what=scan.next();
-			// TODO Auto-generated method stub
-			for(int hold=0;hold<=ksr.length;hold++)
-			{
-				for(int com=hold+1;com<ksr.length;com++)
-				{
-					if(what.equalsIgnoreCase("name"))
-					{
-						if(ksr[hold].getGroupName().compareTo(ksr[com].getGroupName())>0)
-						{
-							forum=ksr[hold];
-							ksr[hold]=ksr[com];
-							ksr[com]=forum;
-						}
-					}
-					else if(what.equalsIgnoreCase("incharge"))
-					{
-						if(ksr[hold].getGroupIncharge().compareTo(ksr[com].getGroupIncharge())>0)
-						{
-							forum=ksr[hold];
-							ksr[hold]=ksr[com];
-							ksr[com]=forum;
-						}
-					}
-					else if(what.equalsIgnoreCase("tech"))
-					{
-						if(ksr[hold].getGroupTechnology().compareTo(ksr[com].getGroupTechnology())>0)
-						{
-							forum=ksr[hold];
-							ksr[hold]=ksr[com];
-							ksr[com]=forum;
-						}
-					}
-					else if(what.equalsIgnoreCase("count"))
-					{
-						if(ksr[hold].getMembersCount()>=ksr[com].getMembersCount())
-						{
-							forum=ksr[hold];
-							ksr[hold]=ksr[com];
-							ksr[com]=forum;
-						}
-					}
-					else if(what.equalsIgnoreCase("hours"))
-					{
-						if(ksr[hold].getProductionHours()>=ksr[com].getProductionHours())
-						{
-							forum=ksr[hold];
-							ksr[hold]=ksr[com];
-							ksr[com]=forum;
-						}
-					}
-				}
-			}
+			/*
+			 * Forum forum=null; System.out.println("Based on ehat you wish to sort");
+			 * String what=scan.next(); // TODO Auto-generated method stub for(int
+			 * hold=0;hold<=ksr.length;hold++) { for(int com=hold+1;com<ksr.length;com++) {
+			 * if(what.equalsIgnoreCase("name")) {
+			 * if(ksr[hold].getGroupName().compareTo(ksr[com].getGroupName())>0) {
+			 * forum=ksr[hold]; ksr[hold]=ksr[com]; ksr[com]=forum; } } else
+			 * if(what.equalsIgnoreCase("incharge")) {
+			 * if(ksr[hold].getGroupIncharge().compareTo(ksr[com].getGroupIncharge())>0) {
+			 * forum=ksr[hold]; ksr[hold]=ksr[com]; ksr[com]=forum; } } else
+			 * if(what.equalsIgnoreCase("tech")) {
+			 * if(ksr[hold].getGroupTechnology().compareTo(ksr[com].getGroupTechnology())>0)
+			 * { forum=ksr[hold]; ksr[hold]=ksr[com]; ksr[com]=forum; } } else
+			 * if(what.equalsIgnoreCase("count")) {
+			 * if(ksr[hold].getMembersCount()>=ksr[com].getMembersCount()) {
+			 * forum=ksr[hold]; ksr[hold]=ksr[com]; ksr[com]=forum; } } else
+			 * if(what.equalsIgnoreCase("hours")) {
+			 * if(ksr[hold].getProductionHours()>=ksr[com].getProductionHours()) {
+			 * forum=ksr[hold]; ksr[hold]=ksr[com]; ksr[com]=forum; } } } }
+			 */
 		}
 }
