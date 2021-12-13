@@ -1,6 +1,7 @@
 package manoj.sarathy.console.ManojSarathyConsoleApp;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.List;
@@ -226,6 +227,8 @@ public class ForumAccess implements Runnable, ForumActions
 		@Override
 		public void sortGroup() 
 		{
+			//System.out.println("Sort based on name,tech,head,count,hours");
+			Collections.sort(ksr);
 			/*
 			 * Forum forum=null; System.out.println("Based on ehat you wish to sort");
 			 * String what=scan.next(); // TODO Auto-generated method stub for(int
