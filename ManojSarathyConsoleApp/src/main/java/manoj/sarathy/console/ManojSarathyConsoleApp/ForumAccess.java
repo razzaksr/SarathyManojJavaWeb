@@ -1,5 +1,12 @@
 package manoj.sarathy.console.ManojSarathyConsoleApp;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.InputMismatchException;
@@ -11,21 +18,49 @@ import java.util.Vector;
 
 public class ForumAccess implements Runnable, ForumActions
 {
-	ArrayList<Forum> ksr=new ArrayList<Forum>();
+	File file=new File("D:\\Course backups\\Java\\SarathyManoj\\Forum.doc");
+	FileOutputStream fos=null;ObjectOutputStream oos=null;
+	FileInputStream fis=null;ObjectInputStream ois=null;
+	ArrayList<Forum> ksr=null;
 	Scanner scan=new Scanner(System.in);
+	
+	public void affect() throws IOException
+	{
+		fos=new FileOutputStream(file); 
+		oos=new ObjectOutputStream(fos); 
+		oos.writeObject(ksr); // current list updated
+		oos.close();fos.close();
+	}
+	
+	public void fetch() throws IOException, ClassNotFoundException
+	{
+		fis=new FileInputStream(file);
+		ois=new ObjectInputStream(fis);
+		
+		ksr = (ArrayList<Forum>)ois.readObject();// read existing list from file
+		
+		ois.close();
+		fis.close();
+	}
 	
 	public ForumAccess()
 	{
-		ksr.add(new Forum("Web", "Javascript", "Mohamed", 20, 40));
-		ksr.add(new Forum("NEAN", "JavaScript", "Razak", 45, 120));
-		ksr.add(new Forum("MERN", "React", "Razak Mohamed", 60, 80));
-		ksr.add(new Forum("Python", "DJango", "Sasi", 40, 100));
-		ksr.add(new Forum("Java", "Spring", "Annamalai", 50, 70));
-		ksr.add(new Forum("Dotnet", "Razor", "Maheshwaran", 35, 60));
-		ksr.add(new Forum("Basic", "Python", "Annamalai", 25, 30));
-		ksr.add(new Forum("Mobile", "Android", "Dinesh", 40, 45));
-		ksr.add(new Forum("CS-4", "Data science", "Sobin", 100, 120));
-		ksr.add(new Forum("EE-4", "VLSI", "Aasai", 30, 55));
+		/*
+		 * ksr.add(new Forum("Web", "Javascript", "Mohamed", 20, 40)); ksr.add(new
+		 * Forum("NEAN", "JavaScript", "Razak", 45, 120)); ksr.add(new Forum("MERN",
+		 * "React", "Razak Mohamed", 60, 80)); ksr.add(new Forum("Python", "DJango",
+		 * "Sasi", 40, 100)); ksr.add(new Forum("Java", "Spring", "Annamalai", 50, 70));
+		 * ksr.add(new Forum("Dotnet", "Razor", "Maheshwaran", 35, 60)); ksr.add(new
+		 * Forum("Basic", "Python", "Annamalai", 25, 30)); ksr.add(new Forum("Mobile",
+		 * "Android", "Dinesh", 40, 45)); ksr.add(new Forum("CS-4", "Data science",
+		 * "Sobin", 100, 120)); ksr.add(new Forum("EE-4", "VLSI", "Aasai", 30, 55)); try
+		 * { fos=new FileOutputStream(file); oos=new ObjectOutputStream(fos);
+		 * 
+		 * oos.writeObject(ksr);
+		 * 
+		 * oos.close();fos.close(); } catch (IOException e) { // TODO: handle exception
+		 * }
+		 */
 	}
 	
 	@Override
@@ -41,9 +76,6 @@ public class ForumAccess implements Runnable, ForumActions
 			case 1:
 				System.out.println("Create new Forum with mandate details name,tech,incharge,count,hours");
 				Forum forum=new Forum(scan.next(), scan.next(), scan.next(), scan.nextInt(), scan.nextInt());
-				//Forum forum=new Forum();
-				//forum.setGroupName(scan.next());
-				
 				System.out.println(addNewGroup(forum));
 				break;
 			case 2:
@@ -93,30 +125,59 @@ public class ForumAccess implements Runnable, ForumActions
 		@Override
 		public String addNewGroup(Forum forum) {
 			// TODO Auto-generated method stub
-			ksr.add(forum);
+			try
+			{
+				fetch();
+				ksr.add(forum);// add new object into existing collection
+				affect();
+				/*
+				 * fis=new FileInputStream(file); ois=new ObjectInputStream(fis);
+				 * 
+				 * ksr = (ArrayList<Forum>)ois.readObject();// read existing list from file
+				 * 
+				 * ois.close(); fis.close(); ksr.add(forum);// add new object into existing
+				 * collection
+				 * 
+				 * fos=new FileOutputStream(file); oos=new ObjectOutputStream(fos);
+				 * oos.writeObject(ksr); // current list updated oos.close();fos.close();
+				 */
+			}
+			catch(IOException e) {} 
+			catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return forum.getGroupName()+" has added";
 		}
 
 		@Override
 		public void listAllGroups() {
 			// TODO Auto-generated method stub
-			Iterator<Forum> it=ksr.iterator();
-			while(it.hasNext())
+			try
 			{
-				System.out.println(it.next());
+				fetch();
+				Iterator<Forum> it=ksr.iterator();
+				while(it.hasNext())
+				{
+					System.out.println(it.next());
+				}
 			}
+			catch(IOException | ClassNotFoundException e) {}
 		}
 
 		@Override
 		public void deleteGroup(String name) {
 				try
 				{
+					fetch();
 					for(int index=0;index<ksr.size();index++)
 					{
 						if(ksr.get(index).getGroupName().equalsIgnoreCase(name))
 						{
 							ksr.remove(ksr.get(index));
 							System.out.println(name+" forum has removed successfully");
+							affect();
+							
 							return;
 						}
 					}
@@ -131,6 +192,12 @@ public class ForumAccess implements Runnable, ForumActions
 					System.out.println(h.getGroupName());
 				}
 				deleteGroup(scan.next());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 

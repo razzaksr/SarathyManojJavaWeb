@@ -1,6 +1,8 @@
 package manoj.sarathy.console.ManojSarathyConsoleApp;
 
-public class Forum implements Comparable<Forum>
+import java.io.Serializable;
+
+public class Forum implements Comparable<Forum>, Serializable
 {
 	private String groupName;
 	private String groupTechnology;
