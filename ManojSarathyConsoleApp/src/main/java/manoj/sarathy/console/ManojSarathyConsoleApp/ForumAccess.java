@@ -77,7 +77,7 @@ public class ForumAccess implements Runnable, ForumActions
 					System.out.println("Tell us members count");
 					searchGroup(scan.nextInt());
 					break;
-				case "incharge":
+				case "incharge":case "hours":
 					System.out.println("Tell us incharge and hours");
 					searchGroup(scan.next(),scan.nextInt());
 					break;
@@ -109,10 +109,6 @@ public class ForumAccess implements Runnable, ForumActions
 
 		@Override
 		public void deleteGroup(String name) {
-			// TODO Auto-generated method stub
-			//Forum[] tmp=(Forum[])ksr.toArray();
-			//List<Forum> tmp=new Vector<Forum>();
-			//tmp.addAll(ksr);
 				try
 				{
 					for(int index=0;index<ksr.size();index++)
@@ -184,6 +180,7 @@ public class ForumAccess implements Runnable, ForumActions
 			catch(ForumNotFoundException exe)
 			{
 				System.out.println(exe+"\n keyword to update not matched select any below:");
+				System.out.println("keyword/ refernce to update should be name,head,tech,hours,count");
 				for(Forum f:ksr) {System.out.println(f.getGroupName());}
 				updateGroup(scan.next());
 			}
@@ -192,36 +189,76 @@ public class ForumAccess implements Runnable, ForumActions
 		@Override
 		public void searchGroup(String technology) 
 		{
-			/*
-			 * System.out.println("Trying to fetch froum's matching the technology "
-			 * +technology); // TODO Auto-generated method stub for(int
-			 * index=0;index<ksr.length;index++) {
-			 * if(ksr[index].getGroupTechnology().equalsIgnoreCase(technology)) {
-			 * System.out.println(ksr[index]); } }
-			 */
+			boolean hai=false;
+			try
+			{
+				System.out.println("searching based on technology: "+technology);
+				for(Forum f:ksr)
+				{
+					if(f.getGroupTechnology().equalsIgnoreCase(technology))
+					{
+						hai=true;
+						System.out.println(f);
+					}
+				}
+				if(hai==false)
+					throw new ForumNotFoundException();
+			}
+			catch(ForumNotFoundException fe)
+			{
+				System.out.println(fe+"\nEnter the another technology: ");
+				searchGroup(scan.next());
+			}
 		}
 
 		@Override
-		public void searchGroup(int count) {
-			/*
-			 * // TODO Auto-generated method stub
-			 * System.out.println("Trying to fetch froum's matching the members count "
-			 * +count); // TODO Auto-generated method stub for(int
-			 * index=0;index<ksr.length;index++) { if(ksr[index].getMembersCount()>=count) {
-			 * System.out.println(ksr[index]); } }
-			 */
+		public void searchGroup(int count) 
+		{
+			boolean hai=false;
+			try
+			{
+				System.out.println("searching based on members count: "+count);
+				for(Forum f:ksr)
+				{
+					if(f.getMembersCount()>=count)
+					{
+						hai=true;
+						System.out.println(f);
+					}
+				}
+				if(hai!=true)
+					throw new ForumNotFoundException();
+			}
+			catch(ForumNotFoundException fe)
+			{
+				System.out.println(fe+"\nEnter the new members count");
+				searchGroup(scan.nextInt());
+			}
 		}
 
 		@Override
-		public void searchGroup(String incharge, int hours) {
-			/*
-			 * // TODO Auto-generated method stub
-			 * System.out.println("Trying to fetch froum's matching the incharge "
-			 * +incharge+" or production hours "+hours); // TODO Auto-generated method stub
-			 * for(int index=0;index<ksr.length;index++) {
-			 * if(ksr[index].getGroupIncharge().equalsIgnoreCase(incharge) ||
-			 * ksr[index].getProductionHours()>=hours) { System.out.println(ksr[index]); } }
-			 */
+		public void searchGroup(String incharge, int hours) 
+		{
+			boolean hai=false;
+			try
+			{
+				System.out.println("searching based on incharge or hours: "+incharge+"  and "+hours);
+				for(Forum f:ksr)
+				{
+					if(f.getGroupIncharge().equalsIgnoreCase(incharge) || f.getProductionHours()>=hours)
+					{
+						hai=true;
+						System.out.println(f);
+					}
+				}
+				if(hai!=true)
+					throw new ForumNotFoundException();
+			}
+			catch(ForumNotFoundException forums)
+			{
+				System.out.println(forums+"\nEnter the incharge and hours once again");
+				searchGroup(scan.next(), scan.nextInt());
+			}
 		}
 
 		@Override
