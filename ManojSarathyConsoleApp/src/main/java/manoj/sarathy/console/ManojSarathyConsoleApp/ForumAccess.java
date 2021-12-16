@@ -260,6 +260,7 @@ public class ForumAccess implements Runnable, ForumActions
 			try
 			{
 				System.out.println("searching based on technology: "+technology);
+				fetch();
 				for(Forum f:ksr)
 				{
 					if(f.getGroupTechnology().equalsIgnoreCase(technology))
@@ -271,7 +272,7 @@ public class ForumAccess implements Runnable, ForumActions
 				if(hai==false)
 					throw new ForumNotFoundException();
 			}
-			catch(ForumNotFoundException fe)
+			catch(ForumNotFoundException | ClassNotFoundException | IOException fe)
 			{
 				System.out.println(fe+"\nEnter the another technology: ");
 				searchGroup(scan.next());
@@ -285,6 +286,7 @@ public class ForumAccess implements Runnable, ForumActions
 			try
 			{
 				System.out.println("searching based on members count: "+count);
+				fetch();
 				for(Forum f:ksr)
 				{
 					if(f.getMembersCount()>=count)
@@ -296,7 +298,7 @@ public class ForumAccess implements Runnable, ForumActions
 				if(hai!=true)
 					throw new ForumNotFoundException();
 			}
-			catch(ForumNotFoundException fe)
+			catch(ForumNotFoundException | ClassNotFoundException | IOException fe)
 			{
 				System.out.println(fe+"\nEnter the new members count");
 				searchGroup(scan.nextInt());
@@ -310,6 +312,7 @@ public class ForumAccess implements Runnable, ForumActions
 			try
 			{
 				System.out.println("searching based on incharge or hours: "+incharge+"  and "+hours);
+				fetch();
 				for(Forum f:ksr)
 				{
 					if(f.getGroupIncharge().equalsIgnoreCase(incharge) || f.getProductionHours()>=hours)
@@ -321,7 +324,7 @@ public class ForumAccess implements Runnable, ForumActions
 				if(hai!=true)
 					throw new ForumNotFoundException();
 			}
-			catch(ForumNotFoundException forums)
+			catch(ForumNotFoundException | ClassNotFoundException | IOException forums)
 			{
 				System.out.println(forums+"\nEnter the incharge and hours once again");
 				searchGroup(scan.next(), scan.nextInt());
@@ -332,9 +335,17 @@ public class ForumAccess implements Runnable, ForumActions
 		public void sortGroup() 
 		{
 			//System.out.println("Sort based on name,tech,head,count,hours");
-			Collections.sort(ksr);
+			try {
+				fetch();
+				Collections.sort(ksr);
+				affect();
+			}
+			catch(IOException | ClassNotFoundException io)
+			{
+				
+			}
 			/*
-			 * Forum forum=null; System.out.println("Based on ehat you wish to sort");
+			 * Forum forum=null; System.out.println("Based on what you wish to sort");
 			 * String what=scan.next(); // TODO Auto-generated method stub for(int
 			 * hold=0;hold<=ksr.length;hold++) { for(int com=hold+1;com<ksr.length;com++) {
 			 * if(what.equalsIgnoreCase("name")) {
