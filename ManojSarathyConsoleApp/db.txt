@@ -1,0 +1,74 @@
+Application:
+front end/ Presentation: console, gui, web(html,bootstrap,jinja), app
+back end/ Business     : python,java,javascript,dotnet,.....
+storage/ data:	       : file, databases
+
+desktop: files, databases
+web: databases,files
+
+Database:
+
+servers:
+Oracle
+MS SQL
+Derby
+Mongo
+MySQL: Oracle<< Open source
+
+Workbench: console
+XAMPP: browser gui based tool
+
+database: project
+tables: class
+fields/columns: properties
+rows: object
+
+database creation:
+create database 'sarathy'
+
+table creation:
+CREATE TABLE `sarathy`.`manoj` ( `sno` INT(4) NOT NULL , `name` VARCHAR(250) NOT NULL , `address` TEXT NOT NULL , `contact` BIGINT(10) NOT NULL ) ENGINE = InnoDB;
+
+
+altering table:
+ALTER TABLE `manoj` ADD `salary` DOUBLE NOT NULL AFTER `contact`, ADD `exp` INT(4) NOT NULL AFTER `salary`;
+
+ALTER TABLE `manoj` ADD PRIMARY KEY(`sno`);
+
+ALTER TABLE `manoj` CHANGE `sno` `sno` INT(4) NOT NULL AUTO_INCREMENT;
+
+inserting: int
+INSERT INTO `manoj` (`sno`, `name`, `address`, `contact`, `salary`, `exp`) VALUES ('1901', 'Annakili', 'Vazhapadi', '8765456776', '4.5', '2'), (NULL, 'Aarthi', 'Sivathapuram', '8765456755', '4.2', '2');
+
+deletion: int
+DELETE FROM `manoj` WHERE `sno` = 1906"
+DELETE FROM `manoj` WHERE `address`='Salem'
+
+updation: int
+UPDATE `manoj` SET `name` = 'Aarthi Iyanar', `address` = 'Chennai', `exp` = '3' WHERE `manoj`.`sno` = 1902;
+
+UPDATE `manoj` SET `salary`=`salary`+0.5 WHERE `exp`>= 8;
+
+fetch: SELECT COLUMNS FROM TABLE WHERE CONDITION
+SELECT * FROM `manoj`	>> all rows all columns
+
+SELECT * FROM `manoj` WHERE `sno` between 1901 and 1908;>> all columns 1901 to 1908 rows
+
+SELECT `exp`,`name` FROM `manoj`;>> all rows specific columns
+
+SELECT `name`,`salary`,`exp` FROM `manoj` WHERE `name` like 'A%';>> specific olumns of specific rows
+
+
+truncate:
+TRUNCATE `manoj`
+
+delete table:
+DROP TABLE `manoj`
+
+delete database:
+DROP DATABASE `sarathy`
+
+
+database connectivity:
+java - jdbc
+python - pymysql, mysqlclient
