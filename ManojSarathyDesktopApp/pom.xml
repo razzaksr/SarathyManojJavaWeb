@@ -59,7 +59,7 @@
 	          <manifest>
 	            <addClasspath>true</addClasspath>
 	            <classpathPrefix>lib/</classpathPrefix>
-	            <mainClass>gui.manoj.sarathy.forumapp.ManojSarathyDesktopApp.App</mainClass>
+	            <mainClass>gui.manoj.sarathy.forumapp.ManojSarathyDesktopApp.Login</mainClass>
 	          </manifest>
 	        </archive>
 	      </configuration>

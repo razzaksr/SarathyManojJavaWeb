@@ -37,18 +37,18 @@ public class Available extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Available frame = new Available();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					Available frame = new Available();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
@@ -140,6 +140,97 @@ public class Available extends JFrame {
 				collect();
 			}
 		});
+		panel.add(btnNewButton_1);
+	}
+	
+	public void collect(List<Forum> hy)
+	{
+		model=new DefaultTableModel();
+		model.addColumn("Forum Name");model.addColumn("Forum Technology");model.addColumn("Forum Head");
+		model.addColumn("Forum Members Count");model.addColumn("Forum Production Hours");
+		list = hy;
+		Vector<String> tmp=null;
+		for(Forum f:list)
+		{
+			tmp=new Vector<String>();
+			tmp.add(f.getGroupName());tmp.add(f.getGroupTechnology());tmp.add(f.getGroupIncharge());
+			tmp.add(""+f.getMembersCount());tmp.add(""+f.getProductionHours());
+			model.addRow(tmp);
+		}
+		table = new JTable(model);
+		table.setForeground(Color.BLUE);
+		table.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		table.setBackground(Color.PINK);
+		scrollPane.setViewportView(table);
+	}
+	
+	public Available(List<Forum> hai) 
+	{
+		setBackground(Color.WHITE);
+		setTitle("Available Forums");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Available.class.getResource("/gui/manoj/sarathy/forumapp/ManojSarathyDesktopApp/zealous.png")));
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+		
+		scrollPane = new JScrollPane();
+		contentPane.add(scrollPane, BorderLayout.CENTER);
+		collect(hai);
+		
+//		model=new DefaultTableModel();
+//		model.addColumn("Forum Name");model.addColumn("Forum Technology");model.addColumn("Forum Head");
+//		model.addColumn("Forum Members Count");model.addColumn("Forum Production Hours");
+//		list = FileControl.fetch();
+//		Vector<String> tmp=null;
+//		for(Forum f:list)
+//		{
+//			tmp=new Vector<String>();
+//			tmp.add(f.getGroupName());tmp.add(f.getGroupTechnology());tmp.add(f.getGroupIncharge());
+//			tmp.add(""+f.getMembersCount());tmp.add(""+f.getProductionHours());
+//			model.addRow(tmp);
+//		}
+		
+		/*
+		 * model.addColumn("one");model.addColumn("two");model.addColumn("three");
+		 * 
+		 * Vector<String> hai=new Vector<String>(); hai.add("Sarathy");
+		 * hai.add("Mettur"); hai.add("Java");
+		 * 
+		 * model.addRow(hai);
+		 */
+		
+		
+		
+		panel = new JPanel();
+		contentPane.add(panel, BorderLayout.SOUTH);
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		btnNewButton = new JButton("Edit");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String found=(String) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
+				JOptionPane.showMessageDialog(Available.this, found+" has selected to edit");
+				Update up=new Update(table.getSelectedRow());
+				up.setVisible(true);
+				Available.this.dispose();
+			}
+		});
+		panel.add(btnNewButton);
+		
+		btnNewButton_1 = new JButton("Delete");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String found=(String) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
+				JOptionPane.showMessageDialog(Available.this, found+" has selected to delete");
+				list.remove(table.getSelectedRow());
+				FileControl.affect(list);
+				
+			}
+		});
+		collect(hai);
 		panel.add(btnNewButton_1);
 	}
 
